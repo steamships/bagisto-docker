@@ -1,3 +1,8 @@
+# alias docker-compose
+if ! [[ which docker-compose >/dev/null 2>&1 ]]; then
+	alias docker-compose='docker compose'
+fi
+
 # just to be sure that no traces left
 docker-compose down -v
 
