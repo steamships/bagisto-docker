@@ -44,7 +44,7 @@ ARG user
 WORKDIR $container_project_path
 
 # adding user
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN useradd -G www-data,root -u $uid -d /home/$user -s /bin/bash $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
@@ -58,3 +58,7 @@ RUN chown -R $user:www-data $container_project_path
 
 # changing user
 USER $user
+
+# phpcs
+RUN composer global require squizlabs/php_codesniffer
+ENV PATH /home/$user/.composer/vendor/bin:${PATH}
