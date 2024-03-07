@@ -29,9 +29,6 @@
   // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
   // "shutdownAction": "none",
 
-  // Uncomment the next line to run commands after the container is created.
-  // "postCreateCommand": "cat /etc/os-release",
-
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
@@ -43,12 +40,16 @@
         "xdebug.php-debug"
       ],
       "settings": {
-        "phpcs.executablePath": "/root/.config/composer/vendor/bin/phpcs",
-        "phpcs.composerJsonPath": "/root/.config/composer/composer.json",
+        "phpcs.executablePath": "$HOME/.composer/vendor/bin/phpcs",
+        "phpcs.composerJsonPath": "$HOME/.composer/composer.json",
         "phpcs.standard": "PSR12"
       }
     }
-  }
+  },
+
+  // Uncomment the next line to run commands after the container is created.
+  "postCreateCommand": "sed -i \"s|\\$HOME|$HOME|g\" $HOME/.vscode-server/data/Machine/settings.json"
+
   // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "devcontainer"
+  // "remoteUser": "foo"
 }
