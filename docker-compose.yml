@@ -17,6 +17,7 @@ services:
       - /home/$USER/.netrc:/home/$USER/.netrc
       - /home/$USER/.bashrc:/home/$USER/.bashrc
       - /home/$USER/.bash_aliases:/home/$USER/.bash_aliases
+      - /home/$USER/.ssh:/home/$USER/.ssh
 
   bagisto-mysql:
     image: mysql:8.0
