@@ -50,7 +50,10 @@ RUN mkdir -p /home/$user/.composer && \
 
 # setting apache
 COPY ./.configs/apache.conf /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
+COPY ./.configs/apache-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+RUN a2enmod rewrite ssl && \
+    a2ensite default-ssl && \
+    apache2ctl graceful
 
 # setting up project from `src` folder
 RUN chmod -R 775 $container_project_path

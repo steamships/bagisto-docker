@@ -12,12 +12,23 @@ services:
     image: bagisto-php-apache
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./workspace/:/var/www/html/
       - /home/$USER/.netrc:/home/$USER/.netrc
       - /home/$USER/.bashrc:/home/$USER/.bashrc
       - /home/$USER/.bash_aliases:/home/$USER/.bash_aliases
       - /home/$USER/.ssh:/home/$USER/.ssh
+      - /etc/letsencrypt:/etc/letsencrypt
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    # 10日おきに証明書を更新する(期限切れまで30日以上あれば更新しない)
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done;'"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    command: ["--version"]
 
   bagisto-mysql:
     image: mysql:8.0
