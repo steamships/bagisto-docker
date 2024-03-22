@@ -58,7 +58,3 @@ RUN chown -R $user:www-data $container_project_path
 
 # changing user
 USER $user
-
-# phpcs
-RUN composer global require squizlabs/php_codesniffer
-ENV PATH /home/$user/.composer/vendor/bin:${PATH}
