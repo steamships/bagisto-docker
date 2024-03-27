@@ -48,3 +48,6 @@ docker cp .configs/.env.testing ${apache_container_id}:/var/www/html/bagisto/.en
 
 # executing final commands
 docker exec -i ${apache_container_id} bash -c "cd bagisto && php artisan optimize:clear && php artisan migrate:fresh --seed && php artisan storage:link && php artisan bagisto:publish --force && php artisan optimize:clear"
+
+# issue an certificate
+docker exec -u root -i ${apache_container_id} bash -c "sudo certbot certonly --agree-tos --rsa-key-size 4096 --webroot --webroot-path /var/www/html/bagisto/public --domain ichipa.steamship.co.jp --email admin@steamship.co.jp --no-eff-email && apache2ctl graceful"
