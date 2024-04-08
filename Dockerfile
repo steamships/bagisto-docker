@@ -19,9 +19,10 @@ RUN apt-get update && apt-get install -y \
 # configuring php extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
 RUN docker-php-ext-configure intl
+RUN docker-php-ext-configure pcntl --enable-pcntl
 
 # installing php extension
-RUN docker-php-ext-install bcmath calendar exif gd gmp intl mysqli pdo pdo_mysql zip
+RUN docker-php-ext-install bcmath calendar exif gd gmp intl pcntl mysqli pdo pdo_mysql zip
 
 # installing composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
