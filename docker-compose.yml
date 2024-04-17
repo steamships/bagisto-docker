@@ -12,6 +12,7 @@ services:
     image: bagisto-php-apache
     ports:
       - 80:80
+      - 5173:5173
     volumes:
       - ./workspace/:/var/www/html/
       - ./.configs/php-ichipa.ini:/usr/local/etc/php/conf.d/php-ichipa.ini
