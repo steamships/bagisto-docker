@@ -17,10 +17,10 @@ services:
     volumes:
       - ./workspace/:/var/www/html/
       - ./.configs/php-ichipa.ini:/usr/local/etc/php/conf.d/php-ichipa.ini
-      - /home/$USER/.netrc:/home/$USER/.netrc
-      - /home/$USER/.bashrc:/home/$USER/.bashrc
-      - /home/$USER/.bash_aliases:/home/$USER/.bash_aliases
-      - /home/$USER/.ssh:/home/$USER/.ssh
+      - "${HOME}/.netrc:/home/www-data/.netrc"
+      - "${HOME}/.zshrc:/home/www-data/.zshrc"
+      - "${HOME}/.zsh_aliases:/home/www-data/.zsh_aliases"
+      - "${HOME}/.ssh:/home/www-data/.ssh"
 
   bagisto-mysql:
     platform: ${TARGETPLATFORM:-linux/amd64}
