@@ -3,3 +3,4 @@
 .configs/redis-data
 
 workspace
+certs
