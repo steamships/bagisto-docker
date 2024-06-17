@@ -1,6 +1,21 @@
-version: "3.1"
-
 services:
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: web_https-portal
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - frontend
+    restart: always
+    volumes:
+      - ./certs:/var/lib/https-portal
+    environment:
+      #STAGE: production
+      #STAGE: local
+      #ここにドメイン追加で捌ける
+      DOMAINS: "ichipa.steamship.co.jp -> http://bagisto-php-apache:80,
+      ichipap.steamship.co.jp -> http://bagisto-phpmyadmin:80"
   bagisto-php-apache:
     build:
       args:
@@ -11,7 +26,6 @@ services:
       dockerfile: ./Dockerfile
     image: bagisto-php-apache
     ports:
-      - 80:80
       - 5173:5173
     volumes:
       - ./workspace/:/var/www/html/
@@ -20,6 +34,9 @@ services:
       - /home/$USER/.bashrc:/home/$USER/.bashrc
       - /home/$USER/.bash_aliases:/home/$USER/.bash_aliases
       - /home/$USER/.ssh:/home/$USER/.ssh
+    networks:
+      - frontend
+      - webnet
 
   bagisto-mysql:
     image: mysql:8.0
@@ -31,6 +48,8 @@ services:
       - 3306:3306
     volumes:
       - ./.configs/mysql-data:/var/lib/mysql/
+    networks:
+      - webnet
 
   bagisto-redis:
     image: redis:6.2-alpine
@@ -39,6 +58,8 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - ./.configs/redis-data:/data
+    networks:
+      - webnet
 
   bagisto-phpmyadmin:
     image: phpmyadmin:latest
@@ -47,8 +68,9 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
       UPLOAD_LIMIT: 512M
-    ports:
-      - 8080:80
+    networks:
+      - frontend
+      - webnet
 
   bagisto-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
@@ -69,6 +91,8 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    networks:
+      - webnet
 
   bagisto-kibana:
     image: docker.elastic.co/kibana/kibana:7.17.0
@@ -78,13 +102,21 @@ services:
       - 5601:5601
     depends_on:
       - bagisto-elasticsearch
+    networks:
+      - webnet
 
   bagisto-mailhog:
-      image: mailhog/mailhog
-      logging:
-          # Disable saving logs.
-          driver: 'none'
-      ports:
-          # SMTP server.
-          - 1025:1025
-          - 8025:8025
+    image: mailhog/mailhog
+    logging:
+        # Disable saving logs.
+        driver: 'none'
+    ports:
+        # SMTP server.
+        - 1025:1025
+        - 8025:8025
+    networks:
+      - webnet
+
+networks:
+  frontend:
+  webnet:
