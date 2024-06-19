@@ -15,7 +15,8 @@ services:
       STAGE: local
       #ここにドメイン追加で捌ける
       DOMAINS: "localhost -> http://bagisto-php-apache:80,
-      phpmyadmin.localhost -> http://bagisto-phpmyadmin:80"
+      phpmyadmin.localhost -> http://bagisto-phpmyadmin:80,
+      front.localhost -> http://bagisto-php-apache:3000"
   bagisto-php-apache:
     build:
       args:
@@ -27,6 +28,7 @@ services:
     image: bagisto-php-apache
     ports:
       - 5173:5173
+      - 3000:3000
     volumes:
       - ./workspace/:/var/www/html/
       - ./.configs/php-ichipa.ini:/usr/local/etc/php/conf.d/php-ichipa.ini
@@ -37,7 +39,6 @@ services:
     networks:
       - frontend
       - webnet
-
   bagisto-mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
