@@ -14,8 +14,7 @@ services:
       #STAGE: production
       #STAGE: local
       #ここにドメイン追加で捌ける
-      DOMAINS: "ichipa.steamship.co.jp -> http://bagisto-php-apache:80,
-      ichipap.steamship.co.jp -> http://bagisto-phpmyadmin:80"
+      DOMAINS: "ichipa.steamship.co.jp -> http://bagisto-php-apache:80"
   bagisto-php-apache:
     build:
       args:
@@ -68,8 +67,9 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
       UPLOAD_LIMIT: 512M
+    ports:
+      - 8080:80
     networks:
-      - frontend
       - webnet
 
   bagisto-elasticsearch:
